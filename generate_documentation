@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+get_required_variables() {
+  printf "File: $1\n=========================\n"
+  grep -R 'ifndef' "$1" | sed 's/ifndef//'
+  printf "\n"
+}
+
+file_to_get_documentation_for="$1"
+if [ ! -z "$file_to_get_documentation_for" ]
+then
+  if [ ! -f "$file_to_get_documentation_for" ]
+  then
+    echo "ERROR: ${file_to_get_documentation_for} not found."
+    exit 1
+  fi
+  get_required_variables "$file_to_get_documentation_for"
+else
+  find . -not -path "*/.git/*" -name "*.mk" | \
+    while read file
+    do
+      get_required_variables "$file"
+    done
+fi
