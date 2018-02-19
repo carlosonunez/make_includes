@@ -1,5 +1,5 @@
 #!/usr/bin/env make
-.PHONY: bundle_aws_%
+.PHONY: bundle_%
 # Runs a Bundle command with AWS context.
 # Variable: AWS_REGION: The AWS region to perform work within.
 # Variable: AWS_ACCESS_KEY_ID: The AWS access key to use.
