@@ -1,9 +1,7 @@
 #!/usr/bin/env make
-ifndef TRAVIS_CI_GITHUB_TOKEN
-$(error You need to define TRAVIS_CI_GITHUB_TOKEN first)
-endif
-
 .PHONY: _git_%
+# Variable: GIT_ACTION: The action to perform, such as 'clone' or 'status'.
+# Variable: GIT_OPTIONS: Additional options to provide to Git.
 _git_%: GIT_ACTION=$(shell echo "$@" | cut -f3 -d _)
 _git_%:
 	docker run -t -v $$PWD:/work -w /work \

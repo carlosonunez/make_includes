@@ -1,10 +1,14 @@
 #!/usr/bin/env make
-TRAVIS_CLI_DOCKER_IMAGE=caktux/travis-cli
-TRAVIS_REPO=$(shell cat .git/config | \
-						grep url | \
-						sed 's;.*\:\(.*\).git;\1;' | \
-						sed 's;\/;\\\/;')
 .PHONY: _set_travis_env_vars
+# Configures environment variables for a Travis CI project.
+# Variable: TRAVIS_CI_GITHUB_TOKEN: The GitHub token to tell Travis to use.
+_set_travis_env_vars: \
+	_verify_variable-TRAVIS_CI_GITHUB_TOKEN
+_set_travis_env_vars: TRAVIS_CLI_DOCKER_IMAGE=caktux/travis-cli  \
+	TRAVIS_REPO=$(shell cat .git/config | \
+								grep url | \
+								sed 's#.*\:\(.*\).git#\1#' | \
+								sed 's#\/#\\\/#')
 _set_travis_env_vars:
 	docker run --rm -t -e GEM_HOME=/root/.gem \
 		-e AWS_ACCESS_KEY_ID \

@@ -1,9 +1,10 @@
 #!/usr/bin/env make
-RUBY_DOCKER_IMAGE := ruby:2.4-alpine3.7
-ifndef GEMSPEC_NAME
-	$(error Please define a GEMSPEC_NAME.)
-endif
 .PHONY: _build_gem
+# Builds a Ruby gem.
+# Variable: GEMSPEC_NAME: The name of the gemspec file to build.
+_build_gem: \
+	_verify_variable-GEMSPEC_NAME
+_build_gem: RUBY_DOCKER_IMAGE=ruby:2.4-alpine3.7
 _build_gem:
 	docker run --rm -it -v $$PWD:/work -w /work \
 		-v $$PWD/.gem:/root/.gem \

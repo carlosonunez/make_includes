@@ -1,31 +1,26 @@
 #!/usr/bin/env make
-ifndef DOCKER_IMAGE_NAME
-$(error You need to define a DOCKER_IMAGE_NAME, such as "$(USER)/foo".)
-endif
-ifndef DOCKER_IMAGE_TAG
-$(info Since you did not define DOCKER_IMAGE_TAG, we will use "latest".)
-endif
-ifndef DOCKER_HUB_USERNAME
-$(error You need to define a DOCKER_HUB_USERNAME)
-endif
-ifndef DOCKER_HUB_PASSWORD
-$(error You need to define a DOCKER_HUB_PASSWORD)
-endif
-ifndef DOCKER_IMAGE_TAG
-$(info Since you did not define DOCKER_IMAGE_TAG, we will use "latest".)
-DOCKER_IMAGE_TAG := latest
-endif
-
 .PHONY: _build_docker_image
+# Builds a Docker image.
+# Variable: DOCKER_IMAGE_NAME: The name of the Docker image.
+# Variable: DOCKER_IMAGE_TAG: The tag to apply onto the Docker image
+_build_docker_image: \
+	_verify_variable-DOCKER_IMAGE_NAME \
+	_verify_variable-DOCKER_IMAGE_TAG
 _build_docker_image:
 	docker build -t "$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)"
 
 .PHONY: _push_docker_image_to_docker_hub
+# Pushes a Docker image into Docker Hub.
+# Variable: DOCKER_IMAGE_NAME: The name of the Docker image.
+# Variable: DOCKER_HUB_USERNAME: The hub.docker.com username to use.
+# Variable: DOCKER_HUB_PASSWORD: The hub.docker.com password to use.
+# Variable: DOCKER_IMAGE_TAG: The tag to apply onto the Docker image.
+_push_docker_image_to_docker_hub: \
+	_verify_variable-DOCKER_IMAGE_NAME \
+	_verify_variable-DOCKER_HUB_USERNAME \
+	_verify_variable-DOCKER_HUB_PASSWORD \
+	_verify_variable-DOCKER_IMAGE_TAG
 _push_docker_image_to_docker_hub:
-	if [ -z "$$TRAVIS" ]; \
-	then \
-		exit 0; \
-	fi; \
 	if ! docker login --username=$(DOCKER_HUB_USERNAME) --password=$(DOCKER_HUB_PASSWORD); \
 	then \
 		echo -e "$(ERROR): Failed to log into Docker Hub. Check your env vars."; \

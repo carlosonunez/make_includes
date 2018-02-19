@@ -1,5 +1,14 @@
 #!/usr/bin/env make
+.PHONY: _verify_example_env_is_present
+_verify_example_env_is_present:
+	if [ ! -f .env.example ]; \
+	then \
+		echo -e "$(ERROR) Please be nice to users and provide an .env.example."; \
+		exit 1; \
+	fi
+
 .PHONY: _ensure_environment_is_configured
+_ensure_environment_is_configured: _verify_example_env_is_present
 _ensure_environment_is_configured:
 	cat .env.example | \
 		cut -f1 -d '=' | \
