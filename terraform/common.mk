@@ -79,7 +79,6 @@ terraform_%: TERRAFORM_ACTION=$(shell echo "$@" | \
 	cut -f2 -d '_')
 terraform_%:
 	echo -e "$(INFO) Performing Terraform action: $(TERRAFORM_ACTION)"; \
-	additional_actions="$(ADDITIONAL_TERRAFORM_ARGS)"; \
 	docker run -t -v $$PWD:/work -w /work \
 		-v $$HOME/.aws:/root/.aws \
 		--env-file .env \
@@ -87,4 +86,4 @@ terraform_%:
 		-e AWS_ACCESS_KEY_ID \
 		-e AWS_SECRET_ACCESS_KEY \
 		-e AWS_DEFAULT_REGION=$(AWS_DEFAULT_REGION) \
-		hashicorp/terraform $(TERRAFORM_ACTION) $$additional_actions
+		hashicorp/terraform $(TERRAFORM_ACTION) $(ADDITIONAL_TERRAFORM_ARGS)
