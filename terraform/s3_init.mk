@@ -67,19 +67,19 @@ delete_terraform_tfvars:
 # Variable: AWS_SECRET_ACCESS_KEY: The secret key for the access key provided.
 # Variable: AWS_DEFAULT_REGION: The default region to use. Required by the
 # 					HashiCorp AWS provider.
+# Variable: ADDITIONAL_TERRAFORM_ARGS: Additional arguments to provide to
+# 					Terraform.
 terraform_%: \
 	_verify_variable-AWS_REGION \
 	_verify_variable-AWS_ACCESS_KEY_ID \
 	_verify_variable-AWS_SECRET_ACCESS_KEY \
 	_verify_variable-AWS_DEFAULT_REGION
-terraform_%: TERRAFORM_ACTION=$(shell echo "$@" | cut -f3 -d )
+terraform_%: TERRAFORM_ACTION=$(shell echo "$@" | \
+	cut -f3 -d ' ' | \
+	cut -f2 -d '_')
 terraform_%:
-	if [ "$(TERRAFORM_ACTION)" == "destroy" ]; \
-	then \
-		additional_actions="-force $(ADDITIONAL_TERRAFORM_ARGS)"; \
-	else \
-		additional_actions="$(ADDITIONAL_TERRAFORM_ARGS)"; \
-	fi; \
+	echo -e "$(INFO) Performing Terraform action: $(TERRAFORM_ACTION)"; \
+	additional_actions="$(ADDITIONAL_TERRAFORM_ARGS)"; \
 	docker run -t -v $$PWD:/work -w /work \
 		-v $$HOME/.aws:/root/.aws \
 		--env-file .env \
