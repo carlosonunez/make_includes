@@ -9,7 +9,8 @@ bundle_%: \
 	_verify_variable-AWS_ACCESS_KEY_ID \
 	_verify_variable-AWS_SECRET_ACCESS_KEY
 bundle_%: \
-	RUBY_DOCKER_IMAGE=ruby:2.4-alpine3.7 \
+	RUBY_DOCKER_IMAGE=ruby:2.4-alpine3.7
+bundle_%: \
 	BUNDLE_ACTION=$(shell echo "$@" | cut -f3 -d ' ' | cut -f2 -d '_')
 bundle_%:
 	docker run --rm -t -v $$PWD:/work -w /work \
