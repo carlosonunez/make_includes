@@ -1,16 +1,15 @@
 #!/usr/bin/env make
-ifndef AWS_REGION
-$(error AWS_REGION is not set.)
-endif
-ifndef AWS_ACCESS_KEY_ID
-$(error AWS_ACCESS_KEY_ID is not set.)
-endif
-ifndef AWS_SECRET_ACCESS_KEY
-$(error AWS_SECRET_ACCESS_KEY is not set.)
-endif
-.PHONY: _bundle_aws_%
-_bundle_%: BUNDLE_ACTION=$(shell echo "$@" | cut -f3 -d _)
-_bundle_%:
+.PHONY: bundle_aws_%
+# Runs a Bundle command with AWS context.
+# Variable: AWS_REGION: The AWS region to perform work within.
+# Variable: AWS_ACCESS_KEY_ID: The AWS access key to use.
+# Variable: AWS_SECRET_ACCESS_KEY: The AWS secret key to use.
+bundle_%: \
+	_verify_variable-AWS_REGION \
+	_verify_variable-AWS_ACCESS_KEY_ID \
+	_verify_variable-AWS_SECRET_ACCESS_KEY
+bundle_%: BUNDLE_ACTION=$(shell echo "$@" | cut -f3 -d )
+bundle_%:
 	docker run --rm -t -v $$PWD:/work -w /work \
 		-v $$PWD/.gem:/root/.gem \
 		-v $$HOME/.aws:/root/.aws \

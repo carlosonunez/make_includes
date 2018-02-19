@@ -7,9 +7,21 @@ _verify_example_env_is_present:
 		exit 1; \
 	fi
 
-.PHONY: _ensure_environment_is_configured
-_ensure_environment_is_configured: _verify_example_env_is_present
-_ensure_environment_is_configured:
+.PHONY: _verify_real_env_is_present
+# Checks for a .env in the local directory.
+_verify_real_env_is_present:
+	if [ ! -f .env ]; \
+	then \
+		echo -e "$(ERROR) Please provide a .env."; \
+		exit 1; \
+	fi
+
+.PHONY: ensure_environment_is_configured
+ensure_environment_is_configured: \
+	_verify_example_env_is_present \
+	_verify_real_env_is_present
+
+ensure_environment_is_configured:
 	cat .env.example | \
 		cut -f1 -d '=' | \
 		while read required_env_var; \
