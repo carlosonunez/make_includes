@@ -13,10 +13,17 @@ bundle_%: \
 bundle_%: \
 	BUNDLE_ACTION=$(shell echo "$@" | cut -f3 -d ' ' | cut -f2 -d '_')
 bundle_%:
+	echo -e "$(INFO) Performing Bundle action: $(BUNDLE_ACTION)"; \
+	if [ ! -z "$(BUNDLE_OPTIONS)" ]; \
+	then \
+		echo -e "$(INFO) Options provided to Bundle: $(BUNDLE_OPTIONS)"; \
+	fi; \
 	docker run --rm -t -v $$PWD:/work -w /work \
 		-v $$PWD/.gem:/root/.gem \
 		-v $$HOME/.aws:/root/.aws \
 		-v $$PWD/.bundle:/root/.bundle \
+		-v $$PWD:/work \
+		-w /work \
 		--env-file .env \
 		-e GEM_HOME=/root/.gem \
 		-e BUNDLE_PATH=/root/.gem \

@@ -1,7 +1,8 @@
 #!/usr/bin/env make
 .PHONY: rubocop
 # Performs a Rubocop run.
-rubocop: BUNDLE_OPTIONS=rubocop
+# Variable: RUBOCOP_OPTIONS: Options to pass into Rubocop
+rubocop: BUNDLE_OPTIONS=rubocop $(RUBOCOP_OPTIONS)
 rubocop: bundle_exec
 
 .PHONY: rspec
