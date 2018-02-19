@@ -8,7 +8,7 @@ bundle_%: \
 	_verify_variable-AWS_REGION \
 	_verify_variable-AWS_ACCESS_KEY_ID \
 	_verify_variable-AWS_SECRET_ACCESS_KEY
-bundle_%: BUNDLE_ACTION=$(shell echo "$@" | cut -f3 -d )
+bundle_%: BUNDLE_ACTION=$(shell echo "$@" | cut -f3 -d ' ' | cut -f2 -d '_')
 bundle_%:
 	docker run --rm -t -v $$PWD:/work -w /work \
 		-v $$PWD/.gem:/root/.gem \
