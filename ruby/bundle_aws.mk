@@ -13,6 +13,7 @@ bundle_%:
 	docker run --rm -t -v $$PWD:/work -w /work \
 		-v $$PWD/.gem:/root/.gem \
 		-v $$HOME/.aws:/root/.aws \
+		-v $$PWD/.bundle:/root/.bundle \
 		--env-file .env \
 		-e GEM_HOME=/root/.gem \
 		-e BUNDLE_PATH=/root/.gem \
