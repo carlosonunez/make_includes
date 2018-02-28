@@ -3,7 +3,7 @@
 # Performs a Rubocop run.
 # Variable: RUBOCOP_OPTIONS: Options to pass into Rubocop
 rubocop: BUNDLE_OPTIONS=rubocop $(RUBOCOP_OPTIONS)
-rubocop: bundle_exec
+rubocop: bundle_exec_1
 
 .PHONY: rspec
 # Performs a RSpec run.
@@ -12,7 +12,7 @@ rubocop: bundle_exec
 # Variable: SPEC_PATH: The path to your specs.
 rspec: _verify_variable-SPEC_PATH
 rspec: BUNDLE_OPTIONS=rspec $(RSPEC_OPTIONS) $(SPEC_PATH)
-rspec: bundle_exec
+rspec: bundle_exec_2
 
 .PHONY: rake
 # Runs a Rake target.
@@ -25,4 +25,4 @@ rake:
 		exit 1; \
 	fi
 rake: BUNDLE_OPTIONS=rake $(RAKE_TARGET)
-rake: bundle_exec
+rake: bundle_exec_3
