@@ -9,16 +9,9 @@ rubocop: bundle_exec
 # Performs a RSpec run.
 # Variable: RSPEC_OPTIONS: Options to provide to RSpec.
 # 				  Variable required if .rspec is not present.
-# Variable: SPEC_PATH: The path to your specs.				  
+# Variable: SPEC_PATH: The path to your specs.
 rspec: _verify_variable-SPEC_PATH
-rspec:
-	if [ -z "$(RSPEC_OPTIONS)" ] && [ ! -f ".rspec" ]; \
-	then \
-		echo -e "$(ERROR) You must either provide RSPEC_OPTIONS in your \
-Makefile or a .rspec file in the root directory of this project."; \
-		exit 1; \
-	fi
-rspec: BUNDLE_OPTIONS=rspec $(SPEC_PATH)
+rspec: BUNDLE_OPTIONS=rspec $(RSPEC_OPTIONS) $(SPEC_PATH)
 rspec: bundle_exec
 
 .PHONY: rake
