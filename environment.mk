@@ -20,6 +20,8 @@ _verify_real_env_is_present:
 # Validates that the example .env doesn't contain any potential secrets.
 _validate_example_env:
 	cat .env.example | \
+		grep -v '^#' | \
+		grep -v '^$$' | \
 		while read -r line; \
 		do \
 			key=$$(echo "$$line" | cut -f1 -d =); \
@@ -37,6 +39,8 @@ It should be 'change_me'."; \
 # environment.
 _validate_real_env:
 	cat .env.example | \
+		grep -v '^#' | \
+		grep -v '^$$' | \
 		cut -f1 -d = | \
 		while read required_env_var; \
 		do \
@@ -51,6 +55,8 @@ environment. Please add it to your .env."; \
 .PHONY: _check_for_undocumented_environment_variables
 _check_for_undocumented_environment_variables:
 	cat .env | \
+		grep -v '^#' | \
+		grep -v '^$$' | \
 		cut -f1 -d = | \
 		while read defined_env_var; \
 		do \
